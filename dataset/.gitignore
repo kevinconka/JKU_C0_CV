@@ -1,0 +1,8 @@
+# do not upload data to github
+*
+
+# except the labels folder with all files in it
+!video_*.xml
+!.gitignore
+
+!*/

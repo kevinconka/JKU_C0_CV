@@ -11,7 +11,13 @@ while True:
     if frame is None:
         break
     
-    fgMask = backSub.apply(frame)
+    #fgMask = backSub.apply(frame)
+    
+    # use fastNlMeansDenoisingMulti to denoise the frame
+    h = 4
+    templateWindowSize = 7
+    searchWindowSize = 21
+    denoised = cv.fastNlMeansDenoisingMulti(frame, 2, 5, None, h, templateWindowSize, searchWindowSize)
     
     cv.rectangle(frame, (10, 2), (100,20), (255,255,255), -1)
     cv.putText(frame, str(cap.get(cv.CAP_PROP_POS_FRAMES)), (15, 15),
@@ -19,7 +25,8 @@ while True:
     
     
     cv.imshow('Frame', frame)
-    cv.imshow('FG Mask', fgMask)
+    # cv.imshow('FG Mask', fgMask)
+    cv.imshow('Denoised', denoised)
     
     keyboard = cv.waitKey(30)
     if keyboard == 'q' or keyboard == 27:
