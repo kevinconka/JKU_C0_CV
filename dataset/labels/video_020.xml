@@ -29,7 +29,7 @@
       <assignee></assignee>
       <labels>
         <label>
-          <name>Person</name>
+          <name>person</name>
           <color>#fafa37</color>
           <type>rectangle</type>
           <attributes>
@@ -43,7 +43,7 @@
     </task>
     <dumped>2022-12-06 09:51:54.893108+00:00</dumped>
   </meta>
-  <track id="0" label="Person" source="manual">
+  <track id="0" label="person" source="manual">
     <box frame="0" outside="0" occluded="0" keyframe="1" xtl="144.41" ytl="292.65" xbr="180.76" ybr="319.14" z_order="0">
     </box>
     <box frame="1" outside="0" occluded="0" keyframe="0" xtl="144.38" ytl="292.60" xbr="180.73" ybr="319.09" z_order="0">

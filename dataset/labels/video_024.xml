@@ -29,7 +29,7 @@
       <assignee></assignee>
       <labels>
         <label>
-          <name>Person</name>
+          <name>person</name>
           <color>#c06060</color>
           <type>rectangle</type>
           <attributes>
@@ -43,7 +43,7 @@
     </task>
     <dumped>2022-12-06 09:53:21.324206+00:00</dumped>
   </meta>
-  <track id="0" label="Person" source="manual">
+  <track id="0" label="person" source="manual">
     <box frame="0" outside="0" occluded="0" keyframe="1" xtl="146.88" ytl="274.78" xbr="188.77" ybr="310.52" z_order="0">
     </box>
     <box frame="1" outside="0" occluded="0" keyframe="0" xtl="146.88" ytl="274.66" xbr="188.77" ybr="310.40" z_order="0">
