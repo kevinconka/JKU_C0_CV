@@ -231,9 +231,9 @@ class OCSort(object):
         if not isinstance(xyxys, np.ndarray):
             xyxys = xyxys.numpy()
             confs = confs.numpy()
-            classes = clss.numpy()
+            clss = clss.numpy()
 
-        output_results = np.column_stack((xyxys, confs, classes))
+        output_results = np.column_stack((xyxys, confs, clss))
         
         inds_low = confs > 0.1
         inds_high = confs < self.det_thresh
