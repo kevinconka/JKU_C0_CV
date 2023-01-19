@@ -126,6 +126,10 @@ def run(
     #model.warmup(imgsz=(1 if pt else nr_sources, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(), Profile(), Profile(), Profile())
     curr_frames, prev_frames = [None] * nr_sources, [None] * nr_sources
+
+    # init dict for storing trajectories
+    trajectories = {}
+
     for frame_idx, (path, im, im0s, vid_cap, s) in enumerate(dataset):
         with dt[0]:
             im = torch.from_numpy(im).to(device)
@@ -223,6 +227,21 @@ def run(
                             im_gpu=torch.as_tensor(im0, dtype=torch.float16).to(device).permute(2, 0, 1).flip(0).contiguous() /
                             255 if retina_masks else im[i]
                         )
+                    
+                    for j, (output) in enumerate(outputs[i]):
+                        bbox = output[0:4]
+                        id = output[4]
+
+                        x1, y1, x2, y2 = [int(x) for x in bbox]
+                        center = (int((x1 + x2) / 2), int((y1 + y2) / 2))
+
+                        if id in trajectories.keys():
+                            trajectories[id].append(center)
+                        else:
+                            trajectories[id] = [center]
+                    
+                    annotator.trajectories(trajectories)
+
                     for j, (output) in enumerate(outputs[i]):
                         
                         bbox = output[0:4]
@@ -248,6 +267,7 @@ def run(
                                 (f'{id} {conf:.2f}' if hide_class else f'{id} {names[c]} {conf:.2f}'))
                             color = colors(c, True)
                             annotator.box_label(bbox, label, color=color)
+            
                             if save_trajectories and tracking_method == 'strongsort':
                                 q = output[7]
                                 tracker_list[i].trajectory(im0, q, color=color)
