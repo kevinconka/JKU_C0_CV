@@ -89,7 +89,7 @@ class Annotator:
             if len(trajectory) == 1:
                 continue
             for i in range(1, len(trajectory)):
-                cv2.line(self.im, trajectory[i - 1], trajectory[i], colors(id))
+                cv2.line(self.im, trajectory[i - 1], trajectory[i], colors(id), self.lw)
                 
 
     def box_label(self, box, label='', color=(128, 128, 128), txt_color=(255, 255, 255)):
