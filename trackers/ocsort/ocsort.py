@@ -270,11 +270,11 @@ class OCSort(object):
             self.trackers[m[1]].update(dets[m[0], :5], dets[m[0], 5])
 
         # print results of first round
-        print("First round: matched {}, unmatched_dets {}, unmatched_trks {}".format(
-            len(matched), len(unmatched_dets), len(unmatched_trks)))
+        # print("First round: matched {}, unmatched_dets {}, unmatched_trks {}".format(
+        #     len(matched), len(unmatched_dets), len(unmatched_trks)))
 
         """
-            Second round of associaton by OCR
+            Second round of association by OCR
         """
         # BYTE association
         if self.use_byte and len(dets_second) > 0 and unmatched_trks.shape[0] > 0:
@@ -324,7 +324,7 @@ class OCSort(object):
         for m in unmatched_trks:
             trk = self.trackers[m]
             trk.update(None, None)
-            print("Unmatched tracker {}".format(trk.print_info()))
+            # print("Unmatched tracker {}".format(trk.print_info()))
 
         # create and initialise new trackers for unmatched detections
         for i in unmatched_dets:
@@ -334,7 +334,7 @@ class OCSort(object):
         i = len(self.trackers)
         for trk in reversed(self.trackers):
             # print tracker info
-            print("Tracker {}".format(trk.print_info()))
+            # print("Tracker {}".format(trk.print_info()))
 
             if trk.last_observation.sum() < 0:
                 d = trk.get_state()[0]
