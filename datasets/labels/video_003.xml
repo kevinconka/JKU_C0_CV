@@ -30,7 +30,7 @@
       <assignee></assignee>
       <labels>
         <label>
-          <name>Person</name>
+          <name>person</name>
           <color>#c06060</color>
           <type>rectangle</type>
           <attributes>
@@ -45,7 +45,7 @@
     </task>
     <dumped>2023-01-20 17:22:05.993346+00:00</dumped>
   </meta>
-  <track id="0" label="Person" source="manual">
+  <track id="0" label="person" source="manual">
     <box frame="16" outside="0" occluded="0" keyframe="1" xtl="205.13" ytl="370.90" xbr="236.98" ybr="400.48" z_order="0">
     </box>
     <box frame="17" outside="0" occluded="0" keyframe="0" xtl="205.30" ytl="370.76" xbr="237.16" ybr="400.34" z_order="0">
