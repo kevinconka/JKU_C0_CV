@@ -207,78 +207,81 @@ def run(
                 with dt[3]:
                     outputs[i] = tracker_list[i].update(det.cpu(), im0)
                     # print outputs
-                    # if len(outputs[i]) > 0:
-                    #     for j, (output) in enumerate(outputs[i]):
-                    #         bbox = output[0:4]
-                    #         id = output[4]
-                    #         cls = output[5]
-                    #         conf = output[6]
-                    #         print(f"Frame: {frame_idx}, ID: {id}, Class: {cls}, Confidence: {conf}, BBox: {bbox}")
-                    # else:
-                    #     print(f"Frame: {frame_idx}, No objects tracked")
+                    if len(outputs[i]) > 0:
+                        for j, (output) in enumerate(outputs[i]):
+                            bbox = output[0:4]
+                            id = output[4]
+                            cls = output[5]
+                            conf = output[6]
+                            print(f"Frame: {frame_idx}, ID: {id}, Class: {cls}, Confidence: {conf}, BBox: {bbox}")
+                    else:
+                        print(f"Frame: {frame_idx}, No objects tracked")
                 
-                # draw boxes for visualization
-                if len(outputs[i]) > 0:
-                    if save_vid and is_seg:
-                        # Mask plotting
-                        annotator.masks(
-                            masks,
-                            colors=[colors(x, True) for x in det[:, 5]],
-                            im_gpu=torch.as_tensor(im0, dtype=torch.float16).to(device).permute(2, 0, 1).flip(0).contiguous() /
-                            255 if retina_masks else im[i]
-                        )
-                    
-                    for j, (output) in enumerate(outputs[i]):
-                        bbox = output[0:4]
-                        id = output[4]
-
-                        x1, y1, x2, y2 = [int(x) for x in bbox]
-                        center = (int((x1 + x2) / 2), int((y1 + y2) / 2))
-
-                        if id in trajectories.keys():
-                            trajectories[id].append(center)
-                        else:
-                            trajectories[id] = [center]
-                    
-                    annotator.trajectories(trajectories)
-
-                    for j, (output) in enumerate(outputs[i]):
-                        
-                        bbox = output[0:4]
-                        id = output[4]
-                        cls = output[5]
-                        conf = output[6]
-
-                        if save_txt:
-                            # to MOT format
-                            bbox_left = output[0]
-                            bbox_top = output[1]
-                            bbox_w = output[2] - output[0]
-                            bbox_h = output[3] - output[1]
-                            # Write MOT compliant results to file
-                            with open(txt_path + '.txt', 'a') as f:
-                                f.write(('%g ' * 10 + '\n') % (frame_idx + 1, id, bbox_left,  # MOT format
-                                                               bbox_top, bbox_w, bbox_h, -1, -1, -1, i))
-
-                        if save_vid or save_crop or show_vid:  # Add bbox to image
-                            c = int(cls)  # integer class
-                            id = int(id)  # integer id
-                            label = None if hide_labels else (f'{id} {names[c]}' if hide_conf else \
-                                (f'{id} {conf:.2f}' if hide_class else f'{id} {names[c]} {conf:.2f}'))
-                            color = colors(c, True)
-                            annotator.box_label(bbox, label, color=color)
-            
-                            if save_trajectories and tracking_method == 'strongsort':
-                                q = output[7]
-                                tracker_list[i].trajectory(im0, q, color=color)
-                            if save_crop:
-                                txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
-                                save_one_box(bbox.astype(np.int16), imc, file=save_dir / 'crops' / txt_file_name / names[c] / f'{id}' / f'{p.stem}.jpg', BGR=True)
-                            
             else:
                 if tracking_method == 'ocsort':
-                    tracker_list[i].update(np.empty((0, 6)), None)
-                #tracker_list[i].tracker.pred_n_update_all_tracks()
+                    with dt[3]:
+                        outputs[i] = tracker_list[i].update(np.empty((0, 6)), None)
+                    
+                    
+            # draw boxes and trajectories for visualization
+            if save_vid and is_seg:
+                # Mask plotting
+                annotator.masks(
+                    masks,
+                    colors=[colors(x, True) for x in det[:, 5]],
+                    im_gpu=torch.as_tensor(im0, dtype=torch.float16).to(device).permute(2, 0, 1).flip(0).contiguous() /
+                    255 if retina_masks else im[i]
+                )
+            
+            for j, (output) in enumerate(outputs[i]):
+                bbox = output[0:4]
+                id = output[4]
+
+                x1, y1, x2, y2 = [int(x) for x in bbox]
+                center = (int((x1 + x2) / 2), int((y1 + y2) / 2))
+
+                if id in trajectories.keys():
+                    trajectories[id].append(center)
+                else:
+                    trajectories[id] = [center]
+            
+            annotator.trajectories(trajectories)
+
+            for j, (output) in enumerate(outputs[i]):
+                
+                bbox = output[0:4]
+                id = output[4]
+                cls = output[5]
+                conf = output[6]
+
+                if save_txt:
+                    # to MOT format
+                    bbox_left = output[0]
+                    bbox_top = output[1]
+                    bbox_w = output[2] - output[0]
+                    bbox_h = output[3] - output[1]
+                    # Write MOT compliant results to file
+                    with open(txt_path + '.txt', 'a') as f:
+                        f.write(('%g ' * 10 + '\n') % (frame_idx + 1, id, bbox_left,  # MOT format
+                                                        bbox_top, bbox_w, bbox_h, -1, -1, -1, i))
+
+                if save_vid or save_crop or show_vid:  # Add bbox to image
+                    c = int(cls)  # integer class
+                    id = int(id)  # integer id
+                    label = None if hide_labels else (f'{id} {names[c]}' if hide_conf else \
+                        (f'{id} {conf:.2f}' if hide_class else f'{id} {names[c]} {conf:.2f}'))
+                    if tracking_method == 'ocsort':
+                        lost = output[7]
+                        label = f'{label[:-4]} (?)' if lost == 1 and label is not None else label
+                    color = colors(c, True)   
+                    annotator.box_label(bbox, label, color=color)
+    
+                    if save_trajectories and tracking_method == 'strongsort':
+                        q = output[7]
+                        tracker_list[i].trajectory(im0, q, color=color)
+                    if save_crop:
+                        txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
+                        save_one_box(bbox.astype(np.int16), imc, file=save_dir / 'crops' / txt_file_name / names[c] / f'{id}' / f'{p.stem}.jpg', BGR=True) 
                 
             # Stream results
             im0 = annotator.result()

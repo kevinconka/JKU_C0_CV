@@ -142,7 +142,7 @@ class KalmanBoxTracker(object):
             self.max_hit_streak = max(self.max_hit_streak, self.hit_streak)
             self.kf.update(convert_bbox_to_z(bbox))
         else:
-            self.kf.update(convert_bbox_to_z(self.last_observation))
+            self.kf.update(bbox)
 
     def predict(self):
         """
@@ -270,8 +270,8 @@ class OCSort(object):
             self.trackers[m[1]].update(dets[m[0], :5], dets[m[0], 5])
 
         # print results of first round
-        # print("First round: matched {}, unmatched_dets {}, unmatched_trks {}".format(
-        #     len(matched), len(unmatched_dets), len(unmatched_trks)))
+        print("First round: matched {}, unmatched_dets {}, unmatched_trks {}".format(
+            len(matched), len(unmatched_dets), len(unmatched_trks)))
 
         """
             Second round of association by OCR
@@ -324,7 +324,7 @@ class OCSort(object):
         for m in unmatched_trks:
             trk = self.trackers[m]
             trk.update(None, None)
-            # print("Unmatched tracker {}".format(trk.print_info()))
+            print("Unmatched tracker {}".format(trk.print_info()))
 
         # create and initialise new trackers for unmatched detections
         for i in unmatched_dets:
@@ -334,7 +334,7 @@ class OCSort(object):
         i = len(self.trackers)
         for trk in reversed(self.trackers):
             # print tracker info
-            # print("Tracker {}".format(trk.print_info()))
+            print("Tracker {}".format(trk.print_info()))
 
             if trk.last_observation.sum() < 0:
                 d = trk.get_state()[0]
@@ -343,15 +343,16 @@ class OCSort(object):
                     this is optional to use the recent observation or the kalman filter prediction,
                     we didn't notice significant difference here
                 """
-                d = trk.last_observation[:4]
+                d = trk.get_state()[0] #trk.last_observation[:4]
             if (trk.time_since_update <= self.max_age):
                 if (trk.hit_streak >= self.min_hits) or (trk.max_hit_streak >= self.min_hits):
                     # +1 as MOT benchmark requires positive
-                    ret.append(np.concatenate((d, [trk.id+1], [trk.cls], [trk.conf])).reshape(1, -1))
+                    lost = 1 if trk.time_since_update > 1 else 0
+                    ret.append(np.concatenate((d, [trk.id+1], [trk.cls], [trk.conf], [lost])).reshape(1, -1))
             i -= 1
             # remove dead tracklet
             if(trk.time_since_update > self.max_age):
                 self.trackers.pop(i)
         if(len(ret) > 0):
             return np.concatenate(ret)
-        return np.empty((0, 5))
+        return np.empty((0, 8))
