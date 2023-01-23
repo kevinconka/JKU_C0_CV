@@ -206,16 +206,16 @@ def run(
                 # pass detections to strongsort
                 with dt[3]:
                     outputs[i] = tracker_list[i].update(det.cpu(), im0)
-                    # print outputs
-                    if len(outputs[i]) > 0:
-                        for j, (output) in enumerate(outputs[i]):
-                            bbox = output[0:4]
-                            id = output[4]
-                            cls = output[5]
-                            conf = output[6]
-                            print(f"Frame: {frame_idx}, ID: {id}, Class: {cls}, Confidence: {conf}, BBox: {bbox}")
-                    else:
-                        print(f"Frame: {frame_idx}, No objects tracked")
+                    # # print outputs
+                    # if len(outputs[i]) > 0:
+                    #     for j, (output) in enumerate(outputs[i]):
+                    #         bbox = output[0:4]
+                    #         id = output[4]
+                    #         cls = output[5]
+                    #         conf = output[6]
+                    #         print(f"Frame: {frame_idx}, ID: {id}, Class: {cls}, Confidence: {conf}, BBox: {bbox}")
+                    # else:
+                    #     print(f"Frame: {frame_idx}, No objects tracked")
                 
             else:
                 if tracking_method == 'ocsort':
