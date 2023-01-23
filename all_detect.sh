@@ -1,0 +1,30 @@
+#!/bin/bash
+
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f1.pt --source ./datasets/data/video_004.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f1.pt --source ./datasets/data/video_010.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f1.pt --source ./datasets/data/video_013.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f1.pt --source ./datasets/data/video_016.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f1.pt --source ./datasets/data/video_018.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f1.pt --source ./datasets/data/video_024.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f2.pt --source ./datasets/data/video_003.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f2.pt --source ./datasets/data/video_006.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f2.pt --source ./datasets/data/video_014.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f2.pt --source ./datasets/data/video_019.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f2.pt --source ./datasets/data/video_022.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f2.pt --source ./datasets/data/video_026.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f3.pt --source ./datasets/data/video_001.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f3.pt --source ./datasets/data/video_007.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f3.pt --source ./datasets/data/video_020.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f3.pt --source ./datasets/data/video_021.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f3.pt --source ./datasets/data/video_023.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f3.pt --source ./datasets/data/video_027.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f4.pt --source ./datasets/data/video_000.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f4.pt --source ./datasets/data/video_005.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f4.pt --source ./datasets/data/video_012.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f4.pt --source ./datasets/data/video_015.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f4.pt --source ./datasets/data/video_025.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f5.pt --source ./datasets/data/video_002.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f5.pt --source ./datasets/data/video_008.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f5.pt --source ./datasets/data/video_009.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f5.pt --source ./datasets/data/video_011.mp4 --conf 0.10 --agnostic-nms
+python yolov5/detect.py --weights ./models/CV-C0-v1-k5-f5.pt --source ./datasets/data/video_017.mp4 --conf 0.10 --agnostic-nms
